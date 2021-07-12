@@ -1,24 +1,19 @@
-{% comment %} <html>
+<html>
     <body>
-        <header> <h1><a href="{% url 'home' %}">D </a></h1> </header>
-        <div style="width:80%;height:100px;border:1px solid gray;">
-        <a href="{% url 'ad1' %}"> ad1 </a>
-        {% block content%}
-        {% endblock content%}
-        </div>
+        {%for advertiser in advertiser_list%}
+            <div style="width:80%;height:30%;border:1px solid gray; margin-top:10px;">
+                <p>{{advertiser.name}}<p>
+                <ul>
+                    {% for ad in ad_list %}
+                        {% if ad.advertiser == advertiser %}
+                            <img href="../../../{{ad.imgUrl}}" style="width:20%;height:50%;" alt="sd" />
+                            <li><a href="{{ ad.link }}/">{{ ad.title }}</a></li>
+                        {%endif%}
+                    {% endfor %}
+                </ul>
+            </div>
+        {%endfor%}
     </body>
-</html> {% endcomment %}
+</html>
 
-{%for advetiser in advertiser_list%}
-    <div style="width:80%;height:30%;border:1px solid gray; margin-top:10px;">
-        <p>{{advetiser.name}}<p>
-        <ul>
-            {% for ad in ad_list %}
-                {% comment %} {% if ad.advetiser == advetiser %} {% endcomment %}
-                    <img href="{{ad.imgUrl}}" style="width:20%;height:50%;" alt="sd" />
-                    <li><a href="{{ ad.link }}/">{{ ad.title }}</a></li>
-                {% comment %} {%endif%} {% endcomment %}
-            {% endfor %}
-        </ul>
-    </div>
-{%endfor%}
+

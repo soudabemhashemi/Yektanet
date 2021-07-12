@@ -15,7 +15,8 @@ def home(request):
         'ad_list': ad_list,
         'advertiser_list': advertiser_list,
     }
-    print(context)
+    print(ad_list[0].advertiser.id+1)
+    print(advertiser_list[0].id+1)
     return HttpResponse(template.render(context, request))
 
 class HomePageView(TemplateView):
