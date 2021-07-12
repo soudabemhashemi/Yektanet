@@ -1,0 +1,46 @@
+
+    <h1> new Add </h1>
+    {% comment %} <form action="" method="post"> {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="save" />
+        <
+    </form> {% endcomment %}
+    <form action="" method="POST"> {% csrf_token %}
+        {{form.as_p}}
+        <fieldset>
+            <span>Advertiser ID</span>
+
+            <div>
+                <span><i aria-hidden="true"></i> </span>
+                <input type='text'/>
+                <span></span>
+            </div>
+
+            <span>Image</span>
+
+            <div>
+                <span><i aria-hidden="true"></i> </span>
+                <input type='text'/>
+                <span></span>
+            </div>
+
+            <span>Title</span>
+
+            <div>
+                <span><i aria-hidden="true"></i> </span>
+                <input type='text'/>
+                <span></span>
+            </div>
+
+            <span>URL</span>
+
+            <div>
+                <span><i aria-hidden="true"></i> </span>
+                <input type='text'/>
+                <span></span>
+            </div>
+            <div style="margin-top:20px"><button type="submit">SAVE</button></div>
+
+        </fieldset>
+    </form>
+

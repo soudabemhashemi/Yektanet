@@ -3,16 +3,19 @@
         {%for advertiser in advertiser_list%}
             <div style="width:80%;height:30%;border:1px solid gray; margin-top:10px;">
                 <p>{{advertiser.name}}<p>
-                <ul>
+                <div>
                     {% for ad in ad_list %}
                         {% if ad.advertiser == advertiser %}
-                            <img href="../../../{{ad.imgUrl}}" style="width:20%;height:50%;" alt="sd" />
-                            <li><a href="{{ ad.link }}/">{{ ad.title }}</a></li>
+                            <div style="float: left; width: 33.33%; padding: 5px;">
+                            <img href="../../../{{ad.imgUrl}}" style="width:60%;height:50%;" alt="sd" />
+                            <li><a href="countClicks">{{ ad.title }}</a></li>
+                            </div>
                         {%endif%}
                     {% endfor %}
-                </ul>
+                </div>
             </div>
         {%endfor%}
+        <a href="{% url 'create_new' %}">New Ad</a>
     </body>
 </html>
 

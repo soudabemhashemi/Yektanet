@@ -1,11 +1,23 @@
+from django import template
 from django.http import HttpResponse
-from django.shortcuts import render
-from django.views.generic import TemplateView
-
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic.edit import CreateView
 from .models import Ad, Advertiser
 from django.template import loader
 
-# Create your views here.
+from django.views.generic.base import RedirectView
+
+from django.shortcuts import redirect
+# class AdCounterClicksRedirectView(RedirectView):
+
+#     query_string = True
+#     pattern_name = 'article-detail'
+
+#     def get_redirect_url(self, *args, **kwargs):
+#         adClicks = get_object_or_404(Ad, pk=kwargs['pk'])
+#         adClicks.update_counter()
+#         return super().get_redirect_url(*args, **kwargs)
 
 def home(request):
     ad_list = Ad.objects.all()
@@ -15,13 +27,16 @@ def home(request):
         'ad_list': ad_list,
         'advertiser_list': advertiser_list,
     }
-    print(ad_list[0].advertiser.id+1)
-    print(advertiser_list[0].id+1)
     return HttpResponse(template.render(context, request))
 
-class HomePageView(TemplateView):
-    template_name = 'home.html'
 
-class AdPageView(TemplateView):
-    template_name = 'ad1.html'
+def countClicks(request):
+    print("____________________________________________________")
+    print(request)
+    return redirect('home')
+
+class createAd(CreateView):
+    model = Ad
+    template_name = 'create_new.html'
+    fields = '__all__'
 
