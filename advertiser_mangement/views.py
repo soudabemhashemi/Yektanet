@@ -37,5 +37,6 @@ def createAd(request):
         advertiser = Advertiser.objects.get(id=request.POST['advertiser'])
         ins = Ad(title=title, imgUrl=imgUrl, link=link, advertiser=advertiser)
         ins.save()
+        return redirect('advertiser_mangement:home')
     return render(request, 'create_new.html')
 
