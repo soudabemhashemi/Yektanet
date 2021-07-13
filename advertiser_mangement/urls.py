@@ -2,10 +2,10 @@ from django.urls import path
 
 from . import views
 
-# app_name = 'advertiser_mangement'
+app_name = 'advertiser_mangement'
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('countClicks', views.countClicks, name='countClicks'),
-    path('create/new/', views.createAd.as_view(), name='create_new')
+    path('countClicks/<int:pk>/', views.countClicks.as_view(), name='countClicks'),
+    path('create_new/', views.createAd.as_view(), name='create_new')
 ]

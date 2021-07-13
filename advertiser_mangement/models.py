@@ -16,7 +16,6 @@ class Ad(models.Model):
     advertiser = models.ForeignKey(Advertiser(), on_delete=models.CASCADE, default=None)
 
     def get_absolute_url(self):
-        print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
-        return reverse('Ad_detail', args=[str(self.id)])
+        return reverse('Ad_detail', args=[str(self.clicks)])
 
 
