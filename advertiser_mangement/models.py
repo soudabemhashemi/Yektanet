@@ -21,10 +21,10 @@ class Ad(models.Model):
 
 class Click(models.Model):
     adID = models.ForeignKey(Ad(), on_delete=models.CASCADE, blank=False)
-    date = models.DateField()
+    date = models.DateTimeField()
     ip = models.GenericIPAddressField()
 
 class View(models.Model):
     viewID = models.ForeignKey(Ad(), on_delete=models.CASCADE, blank=False)
-    date = models.DateField()
+    date = models.DateTimeField()
     ip = models.GenericIPAddressField()
