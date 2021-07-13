@@ -26,6 +26,7 @@ class countClicks(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         ad = Ad.objects.get(pk=kwargs['pk'])
         ad.clicks = ad.clicks +1
+        ad.views = ad.views +1
         ad.save()
         return ad.link
 
