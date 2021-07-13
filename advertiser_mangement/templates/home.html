@@ -6,8 +6,8 @@
                 <div>
                     {% for ad in ad_list %}
                         {% if ad.advertiser == advertiser %}
-                            <div style="float: left; width: 33.33%; padding: 5px;">
-                            <img href="../../../{{ad.imgUrl}}" style="width:60%;height:50%;" alt="sd" />
+                            <div style="float: left; width: 30%; padding: 5px;">
+                            <img src="../../{{ad.imgUrl}}" style="width:60%;height:50%;" alt="sd" />
                             <li><a href="/countClicks/{{ad.id}}">{{ ad.title }}</a></li>
                             </div>
                         {%endif%}

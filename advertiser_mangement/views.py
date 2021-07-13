@@ -1,5 +1,5 @@
 from django import template
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView
@@ -29,8 +29,13 @@ class countClicks(RedirectView):
         ad.save()
         return ad.link
 
-class createAd(CreateView):
-    model = Ad
-    template_name = 'create_new.html'
-    fields = '__all__'
+def createAd(request):
+    if request.method == "POST":
+        title = request.POST['title']
+        imgUrl = request.POST['image']
+        link = request.POST['url']
+        advertiser = Advertiser.objects.get(id=request.POST['advertiser'])
+        ins = Ad(title=title, imgUrl=imgUrl, link=link, advertiser=advertiser)
+        ins.save()
+    return render(request, 'create_new.html')
 
