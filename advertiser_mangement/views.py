@@ -5,10 +5,9 @@ from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView
 from .models import Ad, Advertiser
 from django.template import loader
-
 from django.views.generic.base import RedirectView
-
 from django.shortcuts import redirect
+from django.template.response import TemplateResponse
 
 def home(request):
     ad_list = Ad.objects.all()
