@@ -3,8 +3,6 @@ from django.urls import reverse
 
 class Advertiser(models.Model):
     name = models.CharField(max_length=200)
-    clicks = models.IntegerField(default=0)
-    views = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -13,11 +11,12 @@ class Advertiser(models.Model):
 class Ad(models.Model):
     title = models.CharField(max_length=200)
     imgUrl = models.ImageField()
-    # clicks = models.IntegerField(default=0, blank=True)
-    # views = models.IntegerField(default=0, blank=True)
     link = models.CharField(max_length=200)
     advertiser = models.ForeignKey(Advertiser(), on_delete=models.CASCADE, default=None)
     approve = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
 
 class Click(models.Model):
     adID = models.ForeignKey(Ad(), on_delete=models.CASCADE, blank=False)
