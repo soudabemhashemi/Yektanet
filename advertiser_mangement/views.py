@@ -69,26 +69,29 @@ def report(request):
         print("_______________________________")
 
     ###########
-    Noclicks = Ad.objects.all().filter(myClicks__date=view_list_date[0]['date']).count()
-    NOview = Ad.objects.all().filter(myViews__date=view_list_date[0]['date']).count()
-    print(Noclicks/NOview)
+    view_list_date = View.objects.values('date').order_by('date')
+    for v in view_list_date:
+        Noclicks = Ad.objects.all().filter(myClicks__date=v['date']).count()
+        NOview = Ad.objects.all().filter(myViews__date=v['date']).count()
+        print(Noclicks/NOview)
     
     ############
     sum1 = 0
     selectedView = None
-    for click in Ad.objects.get(id=1).myClicks.all():
-        for view in Ad.objects.get(id=1).myViews.all():
-            if click.ip == view.ip and view.date < click.date:
-                selectedView = view
-                time2 = click.date - selectedView.date
-                sum1 += time2.seconds
-        if Ad.objects.get(id=1).myClicks.count() != 0:
-            avg = round(sum1 / Ad.objects.get(id=1).myClicks.count(), 3)
-        else:
-            avg = 0
-        print('avg seconds:' + str(avg))
-        str_avg_time = str(timedelta(seconds=avg))
-        print(str_avg_time)
+    for ad in Ad.objects.values('id'):
+        for click in Ad.objects.get(id=ad['id']).myClicks.all():
+            for view in Ad.objects.get(id=ad['id']).myViews.all():
+                if click.ip == view.ip and view.date < click.date:
+                    selectedView = view
+                    time2 = click.date - selectedView.date
+                    sum1 += time2.seconds
+            if Ad.objects.get(id=1).myClicks.count() != 0:
+                avg = round(sum1 / Ad.objects.get(id=ad['id']).myClicks.count(), 3)
+            else:
+                avg = 0
+            print('avg seconds:' + str(avg))
+            str_avg_time = str(timedelta(seconds=avg))
+            print(str_avg_time)
 
     # print(groups)
     # print(objs)
