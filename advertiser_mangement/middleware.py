@@ -1,19 +1,14 @@
-class getIPMiddleware:
+class GetIpMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
-  
-    def getIP(request):
+
+    def __call__(self, request):
         x_firwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_firwarded_for:
-            ip = x_firwarded_for.split(',')[0]
+            request.ip = x_firwarded_for.split(',')[0]
         else:
-            ip = request.META.get('REMOTE_ADDR')
-        return ip
+            request.ip = request.META.get('REMOTE_ADDR')
 
-    # def __call__(self, request):
-    #     response = request.META.get["IP"]
-    #     return response
+        response = self.get_response(request)
 
-    # def process_template_response(self, _, response):
-    #     ip = response.request["META"]
-    #     return ip
+        return response
