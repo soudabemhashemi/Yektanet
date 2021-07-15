@@ -12,7 +12,7 @@ from django.template.response import TemplateResponse
 import datetime
 from django.db.models import Count, F
 import itertools
-from datetime import datetime
+from datetime import datetime, timedelta
 
 def countViews(request, post_ids):
     for post_id in post_ids:
@@ -51,52 +51,44 @@ def createAd(request):
 
 
 def report(request):
-    pass
-    # q1 = Click.objects.values('adID', 'date')
-    # q2 = View.objects.values('adID', 'date')
-    # q3 = Click.objects.values('adID', 'date').union(View.objects.values('adID', 'date')).order_by('adID')
-    # print(Click.objects.values('adID', 'date').union(View.objects.values('adID', 'date')).order_by('adID').datetimes('date', 'hour').count())
-    # print(Click.objects.exclude(adID__title = 'title2')) 
-    # print(Click.objects.filter(adID__title = 'title1').datetimes('date', 'hour').count())
-    # print(Click.objects.filter(date = datetime.datetime(2021, 7, 14, 8, 0)).filter(adID__title = 'title1').count())
-    # print(Click.objects.datetimes('date', 'hour'))
-    # print(View.objects.datetimes('date', 'hour').count())
-    # print(View.objects.filter(clicks__adID_id=))
-    ad_list = Ad.objects.all()
-    # date_list = Click.objects.datetimes('date','hour').order_by('date')
-    # print(ad_list, date_list)
-    # for ad in ad_list:
-    #     print(Click.objects.filter(adID=ad)
-    #             .extra({'date_created': "time(date)"})
-    #             .values('date_created')
-    #             .annotate(created_count=Count('date'))
-    #     )
-    #     print(View.objects.filter(adID=ad)
-    #             .extra({'date_created': "time(date)"})
-    #             .values('date_created')
-    #             .annotate(created_count=Count('id'))
-    #     )
-    #     print("________________________________________")
 
     def date_hour(timestamp):
         return timestamp.strftime("%H")
-
     date_list = Click.objects.values('date')
     view_list_date = View.objects.values('date')
-
+    ad_list = Ad.objects.all()
     for a in ad_list:
+        print("For Ad ", a.id)
         objs = Click.objects.filter(
             date__range=(date_list[0]['date'],date_list.last()['date']),
             adID=a,
         )
-        objs.union(View.objects.filter(
-            date__range=(view_list_date[0]['date'], view_list_date.last()['date']),
-            viewID=a
-        ))
         groups = itertools.groupby(objs, lambda x: date_hour(x.date))
         for group, matches in groups:
-            print(group, "TTL:", sum(1 for _ in matches))
+            print("Clock: ", group, "TTL:", sum(1 for _ in matches))
         print("_______________________________")
+
+    ###########
+    Noclicks = Ad.objects.all().filter(myClicks__date=view_list_date[0]['date']).count()
+    NOview = Ad.objects.all().filter(myViews__date=view_list_date[0]['date']).count()
+    print(Noclicks/NOview)
+    
+    ############
+    sum1 = 0
+    selectedView = None
+    for click in Ad.objects.get(id=1).myClicks.all():
+        for view in Ad.objects.get(id=1).myViews.all():
+            if click.ip == view.ip and view.date < click.date:
+                selectedView = view
+                time2 = click.date - selectedView.date
+                sum1 += time2.seconds
+        if Ad.objects.get(id=1).myClicks.count() != 0:
+            avg = round(sum1 / Ad.objects.get(id=1).myClicks.count(), 3)
+        else:
+            avg = 0
+        print('avg seconds:' + str(avg))
+        str_avg_time = str(timedelta(seconds=avg))
+        print(str_avg_time)
 
     # print(groups)
     # print(objs)
@@ -127,4 +119,4 @@ def report(request):
         
         # print(s)
 
-    
+    return render(request, 'home.html')
