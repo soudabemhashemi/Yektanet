@@ -1,18 +1,18 @@
 {% load static %}
 <html>
     <body>
-        {%for advertiser in advertiser_list%}
+        {%for advertiser in object_list%}
             <div style="width:80%;height:30%;border:1px solid gray; margin-top:10px;">
-                <p>{{advertiser.name}}<p>
+                <p>{{advertiser.myAds}}<p>
                 <div>
-                    {% for ad in ad_list %}
+                    {% comment %} {% for ad in advertiser.myAds %}
                         {% if ad.advertiser == advertiser %}
                             <div style="float: left; width: 30%; padding: 5px;">
                             <img src="{{ad.imgUrl.url}}" style="width:60%;height:50%;" alt="ad img" />
                             <li><a href="/countClicks/{{ad.id}}">{{ ad.title }}</a></li>
                             </div>
                         {%endif%}
-                    {% endfor %}
+                    {% endfor %} {% endcomment %}
                 </div>
             </div>
         {%endfor%}
