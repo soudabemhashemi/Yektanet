@@ -1,10 +1,11 @@
-from django.views.generic import ListView
-from .models import Ad, Advertiser, Click, View
-from advertiser_mangement import models
+from django.shortcuts import render
+from rest_framework import generics
+from advertiser_mangement.models import Ad, Advertiser
+from .serializers import AdSerializer
 
-class AdListView(ListView):
-    model = Advertiser
-    template_name = 'home.html'
+class AdAPIView(generics.ListAPIView):
+    queryset = Ad.objects.all()
+    serializer_class = AdSerializer
 
 
 
