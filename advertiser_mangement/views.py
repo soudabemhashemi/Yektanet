@@ -1,14 +1,124 @@
-from django.shortcuts import render
+from django.db.models import query
+from django.db.models.query import QuerySet
+from django.http.response import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
-from advertiser_mangement.models import Ad, Advertiser
-from .serializers import AdSerializer
+from rest_framework import views
+from rest_framework.exceptions import ParseError
+from rest_framework.parsers import JSONParser
+from rest_framework import serializers
+from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.response import Response
+from rest_framework.serializers import Serializer
+from rest_framework.views import APIView
+from .models import Ad, Advertiser, Click, View
+from .serializers import AdSerializer, AdvertiserSerializer, ClickSerializer, ViewSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
+import json
+from rest_framework.decorators import api_view
+from rest_framework import status
+# from django.shortcuts import get_object_or_404
 
-class AdAPIView(generics.ListAPIView):
-    queryset = Ad.objects.all()
-    serializer_class = AdSerializer
+
+@api_view(['GET', 'POST'])
+def createAdvertiser(request):
+    if request.method == "GET":
+        advertisers = Advertiser.objects.all()
+        serializer = AdvertiserSerializer(advertisers, many=True)
+        return Response(serializer.data)
+    
+    elif request.method == "POST":
+        serializer = AdvertiserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
+# @api_view(['GET', 'POST'])
+# def createAd(request):
+#     parser_classes = [MultiPartParser, FormParser]
+#     if request.method == "GET":
+#         ads = Ad.objects.all()
+#         serializer = AdSerializer(ads, many=True)
+#         return Response(serializer.data)
+    
+#     elif request.method == "POST":
+#         serializer = AdSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+# class AdList(generics.ListAPIView):
+#     print("HELOOOO")
+#     queryset = Ad.objects.all()
+#     serializer_class = AdSerializer
+
+#     def get(self, request):
+#         print("HEEREEE")
+#         print(self.queryset)
+#         serializer = ViewSerializer(data=self.queryset)
+#         print(serializer)
+#         if serializer.is_valid():
+#             serializer.save()
+#         return Response(serializer.data)
+    
+
+
+
+class createAd(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+
+    def get(self, request):
+        ads = Ad.objects.all()
+        serializer = AdSerializer(ads, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = AdSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+# class createAd(generics.ListAPIView):
+#     queryset = Ad.objects.all()
+#     serializer = AdSerializer
+#     renderer_classes = [TemplateHTMLRenderer]
+#     template_name = 'create_new.html'
+
+#     def get(self, request):
+#         serializer = AdSerializer()
+#         return Response({'serializer': serializer})
+
+#     def post(self, request, *args, **kwargs):
+#         file = request.data['imgUrl']
+#         image = Ad.objects.create(imgUrl=file)
+#         return HttpResponse(json.dumps({'message': "uploaded."}), status=200)
+
+
+# class createAd(APIView):
+#     renderer_classes = [TemplateHTMLRenderer]
+#     parser_classes = [MultiPartParser, FormParser]
+
+#     def get(self, request):
+#         serializer = AdSerializer()
+#         return Response({'serializer': serializer})
+
+#     def post(self, request, format=None):
+#         serializer = AdSerializer(data=request.data)
+#         if not serializer.is_valid():
+#             return Response({'serializer': serializer})
+#         serializer.save()
+#         return redirect('advertiser_mangement:home')
 
 
 
