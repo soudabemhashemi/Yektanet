@@ -8,14 +8,11 @@ app = Celery('Yektanet')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
-@app.task
-def test():
-    print("arg")
 
 
 app.conf.beat_schedule = {
     "test-test": {
-        "task": "test",
+        "task": "advertiser_mangement.tasks.test",
         "schedule": 60
     }
 }

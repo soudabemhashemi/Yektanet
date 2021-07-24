@@ -24,7 +24,7 @@ from django.contrib import messages
 from django.views.generic.edit import FormView
 from django.shortcuts import redirect
 from .tasks import add
-from Yektanet.celery import test
+# from Yektanet.celery import test
 
 # class GenerateRandomUserView(FormView):
 #     template_name = 'core/generate_random_users.html'
@@ -56,7 +56,6 @@ class createAd(APIView):
     parser_classes = [MultiPartParser, FormParser]
 
     def get(self, request):
-        add(2,4)
         ad_list = Ad.objects.all()
         serializer = AdSerializer(ad_list, many=True)
         ip = request.ip
