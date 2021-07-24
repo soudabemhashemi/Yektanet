@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_celery_results',
     # 'corsheaders',
 ]
 
@@ -144,3 +145,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #         'rest_framework.permission.AllowAny',
 #     ]
 # }
+
+CELERY_BROKER_URL = 'amqp://localhost'

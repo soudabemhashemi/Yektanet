@@ -19,7 +19,22 @@ import json
 from rest_framework.decorators import api_view
 from rest_framework import status
 # from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.views.generic.edit import FormView
+from django.shortcuts import redirect
+from .tasks import add
+from Yektanet.celery import test
 
+# class GenerateRandomUserView(FormView):
+#     template_name = 'core/generate_random_users.html'
+#     form_class = GenerateRandomUserForm
+
+#     def form_valid(self, form):
+#         total = form.cleaned_data.get('total')
+#         create_random_user_accounts.delay(total)
+#         messages.success(self.request, 'We are generating your random users! Wait a moment and refresh this page.')
+#         return redirect('users_list')
 
 @api_view(['GET', 'POST'])
 def createAdvertiser(request):
@@ -41,6 +56,7 @@ class createAd(APIView):
     parser_classes = [MultiPartParser, FormParser]
 
     def get(self, request):
+        add(2,4)
         ad_list = Ad.objects.all()
         serializer = AdSerializer(ad_list, many=True)
         ip = request.ip
