@@ -37,46 +37,15 @@ def createAdvertiser(request):
 
 
 
-# @api_view(['GET', 'POST'])
-# def createAd(request):
-#     parser_classes = [MultiPartParser, FormParser]
-#     if request.method == "GET":
-#         ads = Ad.objects.all()
-#         serializer = AdSerializer(ads, many=True)
-#         return Response(serializer.data)
-    
-#     elif request.method == "POST":
-#         serializer = AdSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-# class AdList(generics.ListAPIView):
-#     print("HELOOOO")
-#     queryset = Ad.objects.all()
-#     serializer_class = AdSerializer
-
-#     def get(self, request):
-#         print("HEEREEE")
-#         print(self.queryset)
-#         serializer = ViewSerializer(data=self.queryset)
-#         print(serializer)
-#         if serializer.is_valid():
-#             serializer.save()
-#         return Response(serializer.data)
-    
-
-
-
 class createAd(APIView):
     parser_classes = [MultiPartParser, FormParser]
 
     def get(self, request):
-        ads = Ad.objects.all()
-        serializer = AdSerializer(ads, many=True)
+        ad_list = Ad.objects.all()
+        serializer = AdSerializer(ad_list, many=True)
+        ip = request.ip
+        for ad in ad_list:
+            ad.countView(ip)
         return Response(serializer.data)
 
     def post(self, request, format=None):
@@ -124,20 +93,33 @@ class createAd(APIView):
 
 
 
+# @api_view(['GET', 'POST'])
+# def createAd(request):
+#     parser_classes = [MultiPartParser, FormParser]
+#     if request.method == "GET":
+#         ads = Ad.objects.all()
+#         serializer = AdSerializer(ads, many=True)
+#         return Response(serializer.data)
+    
+#     elif request.method == "POST":
+#         serializer = AdSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
+# class AdList(generics.ListAPIView):
+#     queryset = Ad.objects.all()
+#     serializer_class = AdSerializer
 
-
-
-
-
-
-
-
-
-
-
+#     def get(self, request):
+#         serializer = ViewSerializer(data=self.queryset)
+#         print(serializer)
+#         if serializer.is_valid():
+#             serializer.save()
+#         return Response(serializer.data)
 
 
 

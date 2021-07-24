@@ -25,6 +25,15 @@ class Ad(models.Model):
     def __str__(self):
         return self.title
 
+    def countView(self, userIp):
+        newView = View(viewID=self, ip=userIp)
+        newView.save()
+
+    def countClick(self, userIp):
+        newClick = Click(adID=self, ip=userIp)
+        newClick.save()
+
+
 class Click(models.Model):
     adID = models.ForeignKey(Ad(), on_delete=models.CASCADE, blank=False, related_name="myClicks")
     date = models.DateTimeField(auto_now_add=True)

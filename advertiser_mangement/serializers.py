@@ -8,7 +8,6 @@ from datetime import datetime
 
 
 class AdSerializer(serializers.ModelSerializer):
-    # imgUrl = serializers.ImageField(use_url=True, required=False, allow_empty_file=True)
     class Meta:
         model = Ad
         fields = ('title', 'link', 'imgUrl', 'advertiser')
@@ -24,7 +23,7 @@ class ViewSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        return View.objects.create(date=datetime.now())
+        return View.objects.create()
 
     def update(self, instance, validated_data):
         instance.email = validated_data.get('email', instance.email)
