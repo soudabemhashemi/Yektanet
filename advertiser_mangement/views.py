@@ -23,8 +23,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.views.generic.edit import FormView
 from django.shortcuts import redirect
-from .tasks import add
-# from Yektanet.celery import test
+
 
 # class GenerateRandomUserView(FormView):
 #     template_name = 'core/generate_random_users.html'

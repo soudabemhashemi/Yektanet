@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Ad, Advertiser, Click, View
+from .models import Ad, Advertiser, Click, View, summaryShit
 
 admin.site.register(Advertiser)
 
@@ -17,3 +17,7 @@ class ClickAdmin(admin.ModelAdmin):
 @admin.register(View)
 class ViewAdmin(admin.ModelAdmin):
     list_display = ['viewID', 'date', 'ip']
+
+@admin.register(summaryShit)
+class summaryShitAdmin(admin.ModelAdmin):
+    list_display = ['adID', 'date', 'count', 'view_or_click']

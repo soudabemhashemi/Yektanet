@@ -11,8 +11,12 @@ app.autodiscover_tasks()
 
 
 app.conf.beat_schedule = {
-    "test-test": {
-        "task": "advertiser_mangement.tasks.test",
-        "schedule": 60
+    "number_of_views_clicks_lastHour": {
+        "task": "advertiser_mangement.tasks.summary_in_last_hour",
+        "schedule": crontab(hour="*", minute=0)
+    },
+    "number_of_views_clicks_lastDay": {
+        "task": "advertiser_mangement.tasks.summary_in_last_day",
+        "schedule": crontab(hour=0, minute=0)
     }
 }

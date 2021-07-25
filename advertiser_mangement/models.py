@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.deletion import CASCADE
 from django.db.models.fields import IntegerField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -44,3 +45,13 @@ class View(models.Model):
     viewID = models.ForeignKey(Ad(), on_delete=models.CASCADE, blank=False, related_name="myViews")
     date = models.DateTimeField(auto_now_add=True)
     ip = models.GenericIPAddressField()
+
+
+class summaryShit(models.Model):
+    adID = models.ForeignKey(Ad, on_delete=CASCADE, related_name="mySummary")
+    date = models.DateTimeField()
+    count = models.IntegerField()
+    class Type(models.IntegerChoices):
+        CLICK = 0
+        VIEW = 1
+    view_or_click = models.IntegerField(choices=Type.choices, default=1)
